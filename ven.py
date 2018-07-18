@@ -1,4 +1,5 @@
-import requests, tweepy, time
+import requests, tweepy, time, urllib
+from random import shuffle
 
 with open('config.ini','r') as config:
   tokens = config.readlines()
@@ -36,10 +37,19 @@ def tweet(twitter, ven):
         photo = ven['actor']['picture']
     elif 'charge' == ven['type']:
         photo = ven['transactions'][0]['target']['picture']
-    twitter.update_status(summary + " \n" + photo)
+    if "no-image" in photo:
+        print("Tweeting without photo")
+        twitter.update_status(summary)
+    else:
+        print("Tweeting with photo")
+        urllib.request.urlretrieve(photo, "photo.png")
+        twitter.update_with_media("photo.png", summary)
     
 def check_for_drugs(json):
-    if any(x in json['message'].lower() for x in ('💉', '💊', 'weed', 'meth', 'heroin', 'drugs', 'sex', 'alcohol', 'pills',  'marijuana', 'coke', 'cocaine', 'blowjob', 'porn', 'booze', 'drank')):
+    drugs = ['💉', '💊', 'weed', 'meth', 'heroin', 'drug', 'sex', 'alcohol', 'pills',  'marijuana', 'coke', 'cocaine', 'blowjob', 'porn', 'booze']
+    # shuffle(drugs)
+    # print(drugs)
+    if any(x in json['message'].lower() for x in drugs):
         return json['message']
     else: 
         return False
