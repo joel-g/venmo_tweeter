@@ -29,7 +29,7 @@ def summarize(json):
         method = 'paid'
     elif method == 'charge':
         method = 'charged'
-    return actor + " " + method + " " + target + " for " + message
+    return actor + ' ' + method + ' ' + target + ' for "' + message + '"'
 
 def tweet(twitter, ven):
     summary = summarize(ven)
@@ -39,12 +39,18 @@ def tweet(twitter, ven):
         photo = ven['transactions'][0]['target']['picture']
     if "no-image" in photo:
         print("Tweeting without photo")
-        twitter.update_status(summary)
+        try:
+            twitter.update_status(summary)
+        except:
+            print("Error tweeting")
     else:
         print("Tweeting with photo")
         urllib.request.urlretrieve(photo, "photo.png")
-        twitter.update_with_media("photo.png", summary)
-    
+        try:
+            twitter.update_with_media("photo.png", summary)
+        except:
+            print("Error tweeting")
+
 def check_for_drugs(json):
     drugs = ['heroin', 'marijuana', 'drug', 'cocaine', 'meth', 'sex', 'weed', 'hookers', 'alcohol', '💉', '💊', 'pills', 'blowjob', 'porn', 'sherm', 'pcp']
     # shuffle(drugs)
