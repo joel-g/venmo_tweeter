@@ -1,5 +1,4 @@
 import requests, tweepy, time, urllib
-from random import shuffle
 
 with open('config.ini','r') as config:
   tokens = config.readlines()
@@ -21,8 +20,8 @@ def get_venmos(num):
     return vens.json()['data']
 
 def summarize(json):
-    actor = json['actor']['firstname'] + " " + json['actor']['lastname'][0] + "."
-    target = json['transactions'][0]['target']['firstname'] + " " + json['transactions'][0]['target']['lastname'][0] + "."
+    actor = json['actor']['firstname']
+    target = json['transactions'][0]['target']['firstname']
     method = json['type']
     message = json['message']
     if method == 'payment':
@@ -52,7 +51,7 @@ def tweet(twitter, ven):
             print("Error tweeting")
 
 def check_for_drugs(json):
-    drugs = ['heroin', 'marijuana', 'drug', 'cocaine', 'meth', 'sex', 'weed', 'hookers', 'alcohol', '💉', '💊', 'pills', 'blowjob', 'porn', 'sherm', 'pcp']
+    drugs = ['heroin', 'marijuana', 'drug', 'cocaine', 'meth', 'sex', 'weed', 'hookers', 'alcohol', '💉', '💊', 'pills', 'sherm', 'pcp']
     if any(x in json['message'].lower() for x in drugs):
         return json['message']
     else: 
@@ -65,8 +64,8 @@ def main():
         for ven in vens:
             if check_for_drugs(ven):
                 tweet(twitter, ven)
-                print("Tweeted " + summarize(ven) + "\n Sleeping for an hour")
-                time.sleep(3600)
+                print("Tweeted " + summarize(ven) + "\n Sleeping for 45 minutes")
+                time.sleep(2700)
 
 if __name__ == '__main__':
   main()
