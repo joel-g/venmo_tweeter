@@ -21,8 +21,8 @@ def get_venmos(num):
     return vens.json()['data']
 
 def summarize(json):
-    actor = json['actor']['name']
-    target = json['transactions'][0]['target']['name']
+    actor = json['actor']['firstname'] + " " + json['actor']['lastname'][0] + "."
+    target = json['transactions'][0]['target']['firstname'] + " " + json['transactions'][0]['target']['lastname'][0] + "."
     method = json['type']
     message = json['message']
     if method == 'payment':
