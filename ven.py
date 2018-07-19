@@ -58,7 +58,6 @@ def check_for_drugs(json):
     else: 
         return False
 
-
 def main():
     twitter = authenticate_twitter()
     while True:
