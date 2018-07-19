@@ -53,8 +53,6 @@ def tweet(twitter, ven):
 
 def check_for_drugs(json):
     drugs = ['heroin', 'marijuana', 'drug', 'cocaine', 'meth', 'sex', 'weed', 'hookers', 'alcohol', '💉', '💊', 'pills', 'blowjob', 'porn', 'sherm', 'pcp']
-    # shuffle(drugs)
-    # print(drugs)
     if any(x in json['message'].lower() for x in drugs):
         return json['message']
     else: 
